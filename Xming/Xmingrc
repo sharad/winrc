@@ -149,6 +149,7 @@ Menu myubuntu {
 		# wshell.Run("plink -load verbier xcalc",0);
 	separator
 	xterm exec "plink -load sharad xterm -rightbar"
+	emacs exec "plink -load sharad emacsclient -f ~/.emacs.d/server/general -n -c"
 	urxvtc exec "plink -load sharad urxvtc"
 	separator
 	wireshark exec "plink -load sharad wireshark"
