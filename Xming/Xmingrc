@@ -73,21 +73,22 @@
 # DEBUG <string> prints out the string to the Xming log file
 
 // Make some menus...
-menu apps {
+menu oldapps {
 	xeyes	exec	"xeyes -display %display%"
 	"DOS"	execd	"C:\WINDOWS\system32\cmd"
 	notepad	execd	notepad
 	cygwin	execd	"C:\cygwin\bin\bash --login -i"  # Comment
+	"xterm" exec "C:\Program Files (x86)\PuTTY\plink.exe s@172.16.8.24 xterm" 
 }
 
-menu root {
+menu oldroot {
 // Comments fit here, too...
 	"Reload Xmingrc"	RELOAD
 	"Applications"	menu	apps
-	SEParATOR
+	Separator
 }
 
-menu aot {
+menu oldaot {
 	Separator
 	"Always on Top"	alwaysontop
 }
@@ -95,16 +96,16 @@ menu aot {
 menu xtermspecial {
 	"oclock"	exec	"oclock -display %display%"
 	"Always on Top"	alwaysontop
-	SepArAtor
+	Separator
 }
 
-RootMenu root
+# RootMenu root
 
-DefaultSysMenu aot atend
+# DefaultSysMenu aot atend
 
-SysMenu {
-	"xeyes"	xtermspecial atstart
-}
+# SysMenu {
+#	"xeyes"	xtermspecial atstart
+# }
 
 # IconDirectory	"c:\winnt\"
 
@@ -119,5 +120,106 @@ SysMenu {
 
 
 
-DEBUG "Done parsing the configuration file..."
+# DEBUG "Done parsing the configuration file..."
 
+# Xming Server Resource File
+TrayIcon ",101"
+Menu putty {
+	# pageant exec "C:\Program Files (x86)\Portable PuTTY\pageant D:\PuTTY\private.ppk"
+	pageant exec "C:\Program Files (x86)\PuTTY\pageant C:\Users\spratap\settings\setup\ssh\login-keys\work.ppk"
+	separator
+	sharad execd "C:\Program Files (x86)\PuTTY\putty -load sharad"
+	susengg-01 execd "C:\Program Files (x86)\PuTTY\putty -load susengg-01"
+}
+Menu chamonix {
+	Konsole exec "plink -load chamonix konsole"
+	xterm exec "plink -load chamonix xterm -ls -rightbar"
+	separator
+	"System Settings" exec "plink -load chamonix systemsettings"
+	wireshark exec "plink -load chamonix wireshark"
+	xcalc exec "plink -load chamonix xcalc"
+	xeyes exec "plink -load chamonix xeyes"
+	separator
+	XDMCP execd "Xming :1 -query chamonix.straightrunning.com -clipboard -once -resize"
+}
+Menu myubuntu {
+	Session execd "wscript.exe session.js" //session.js contains...
+		# var wshell = new ActiveXObject("WScript.Shell");
+		# wshell.Run("plink -load verbier wireshark",0);
+		# wshell.Run("plink -load verbier xcalc",0);
+	separator
+	xterm exec "plink -load sharad xterm -rightbar"
+	urxvtc exec "plink -load sharad urxvtc"
+	separator
+	wireshark exec "plink -load sharad wireshark"
+	xcalc exec "plink -load sharad xcalc"
+	xeyes exec "plink -load sharad xeyes"
+}
+Menu verbier {
+	Session execd "wscript.exe session.js" //session.js contains...
+		# var wshell = new ActiveXObject("WScript.Shell");
+		# wshell.Run("plink -load verbier wireshark",0);
+		# wshell.Run("plink -load verbier xcalc",0);
+	separator
+	xterm exec "plink -load verbier xterm -ls -rightbar"
+	separator
+	wireshark exec "plink -load verbier wireshark"
+	xcalc exec "plink -load verbier xcalc"
+	xeyes exec "plink -load verbier xeyes"
+}
+Menu localhost {
+	glxgears execd glxgears
+	oclock exec oclock
+	xcalc exec xcalc
+	xeyes exec xeyes
+}
+Menu access {
+	# Access control commands
+	"ac status" execd "xhost.bat"
+	"ac on" exec "xhost -"
+	"ac off" exec "xhost +"
+}
+Menu utilities {
+	Access menu access
+	# "Follow the log" execd follow
+	# "View the log" viewlog
+	"Load Xmingrc" reload
+	Usage execd "Xming :999 -help"
+	XLaunch execd "XLaunch -load my_config.xlaunch"
+}
+Menu apps {
+	"PuTTY sessions" menu putty
+	Remote@chamonix menu chamonix
+	Remote@myubuntu menu myubuntu
+	Remote@verbier menu verbier
+	Local@zermatt menu localhost
+	Utilities menu utilities
+	"&Command Processor" execd cmd
+	# "Host &Finder" finder
+	separator
+}
+Menu aot {
+	"&Always on Top" alwaysontop
+	separator
+}
+
+RootMenu apps
+
+DefaultSysMenu aot atstart
+
+SysMenu {
+	xterm putty atstart
+}
+# IconDirectory "C:\Windows\System32\"
+# Icons {
+#	xterm "shell32.dll,131"
+# }
+# Styles {
+#	oclock noframe
+# }
+# Taskbar {
+#	xeyes notab
+# 	xcalc newtab
+# }
+# SilentExit
+Debug "Done parsing the configuration file."
